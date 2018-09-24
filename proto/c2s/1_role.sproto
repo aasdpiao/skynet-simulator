@@ -1,0 +1,79 @@
+pull 101 {
+	response {
+		account_id 0 : integer
+		town_name 1 : string
+		gold 2 : integer
+		cash 3 : integer
+		topaz 4 : integer
+		emerald 5 : integer
+		ruby 6 : integer
+		amethyst 7 : integer
+		level 8 : integer
+		exp 9 : integer
+		role_attr 10 : string
+		item_data 11 : item_data
+		grid_data 12 : build_data
+		plant_data 13 : plant_data
+		factory_data 14 : factory_data
+		feed_data 15 : feed_data
+		trains_data 16 : trains_data
+		seaport_data 17 : seaport_data
+		flight_data 18 : flight_data
+		helicopter_data 19 : helicopter_data
+		achievement_data 20 : achievement_data
+		market_data 21 : market_data
+		employment_data 22 : employment_data
+	}
+}
+
+cmd 102{
+	request {
+		cmd 0 : string
+		args 1 : *string
+	}
+	response {
+		result 0 : integer
+	}
+}
+
+version_check 103{
+	request {
+		version 0 : integer
+	}
+	response {
+		result 0 : integer
+	}
+}
+
+buy_item 104{
+	request {
+		item_index 0 : integer
+		item_count 1 : integer
+		cash_count 2 : integer
+	}
+	response {
+		result 0 : integer
+	}
+}
+
+sale_item 105{
+	request {
+		item_index 0 : integer
+		item_count 1 : integer
+		gold_count 2 : integer
+	}
+	response {
+		result 0 : integer
+	}
+}
+
+sign_in 106{
+	request {
+		timestamp 0 : integer
+		continue_times 1 : integer
+	}
+	response {
+		result 0 : integer
+		item_objects 1 : *item_object
+	}
+}

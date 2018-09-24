@@ -1,0 +1,66 @@
+unlock_flight 901{
+	request {
+		timestamp 0 : integer
+		gold_count 1 : integer
+	}
+	response {
+		result 0 : integer
+	}
+}
+
+promote_flight 902{
+	request {
+		timestamp 0 : integer
+		cash_count 1 : integer
+	}
+	response {
+		result 0 : integer
+	}
+}
+
+finish_flight 903{
+	request {
+		timestamp 0 : integer
+		item_objects 1 : *item_object
+	}
+	response {
+		result 0 : integer
+		flight_orders 1 : *flight_order
+		flight_rewards 2 : *flight_reward
+	}
+}
+
+request_flight 904{
+	request {
+		timestamp 0 : integer
+	}
+	response {
+		result 0 : integer
+		flight_orders 1 : *flight_order
+		flight_rewards 2 : *flight_reward
+	}
+}
+
+finish_flight_order 905{
+	request {
+		timestamp 0 : integer
+		row 1 : integer
+		column 2 : integer
+		item_objects 3 : *item_object
+	}
+	response {
+		result 0 : integer
+	}
+}
+
+promote_back 906 {
+	request {
+		timestamp 0 : integer
+		cash_count 1 : integer
+	}
+	response {
+		result 0 : integer
+		flight_orders 1 : *flight_order
+		flight_rewards 2 : *flight_reward
+	}
+}
