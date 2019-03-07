@@ -270,3 +270,8 @@ end
 function get_epoch_time(timestamp)
     return os.date("%Y-%m-%d %H:%M:%S", timestamp)
 end
+
+function get_interval_timestamp(timestamp)
+	local temp = os.date("*t", timestamp)
+	return os.time{year=temp.year, month=temp.month, day=temp.day, hour=23} + 60 * 60
+end

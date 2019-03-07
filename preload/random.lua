@@ -16,17 +16,6 @@ function get_random_value_in_weight(total_weight, value_weight_list)
 	return nil
 end
 
-function deep_copy_table(src_tbl,des_tbl)
-	for key,value in pairs(src_tbl) do
-		if type(value) == "table" then
-			des_tbl[key] = {}
-			utils.deep_copy_table(value,des_tbl[key])
-		else
-			des_tbl[key] = value
-		end
-	end
-end
-
 function get_random_list_in_weight(total_weight,value_weight_list,count)
 	if total_weight == 0 or #value_weight_list == 0 then return end
 	local result = {}
@@ -54,7 +43,3 @@ function get_random_list_in_weight(total_weight,value_weight_list,count)
 	return result
 end
 
-function get_interval_timestamp(timestamp)
-	local temp = os.date("*t", timestamp)
-	return os.time{year=temp.year, month=temp.month, day=temp.day, hour=23} + 60 * 60
-end
