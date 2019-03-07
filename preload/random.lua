@@ -1,18 +1,11 @@
-local print_r = require "print_r"
-local syslog = require "syslog"
-local utils = {}
 
-function utils.get_epoch_time(timestamp)
-    return os.date("%Y-%m-%d %H:%M:%S", timestamp)
-end
-
-function utils.get_random_int(mix,max)
+function get_random_int(mix,max)
 	return math.random(mix,max)
 end
 
-function utils.get_random_value_in_weight(total_weight, value_weight_list)
+function get_random_value_in_weight(total_weight, value_weight_list)
 	if total_weight == 0 or #value_weight_list == 0 then return end
-	local random_weight = utils.get_random_int(1,total_weight)
+	local random_weight = get_random_int(1,total_weight)
 	for i,value in pairs(value_weight_list) do
 		if value[2] < random_weight then
 			random_weight = random_weight - value[2]
@@ -23,7 +16,7 @@ function utils.get_random_value_in_weight(total_weight, value_weight_list)
 	return nil
 end
 
-function utils.deep_copy_table(src_tbl,des_tbl)
+function deep_copy_table(src_tbl,des_tbl)
 	for key,value in pairs(src_tbl) do
 		if type(value) == "table" then
 			des_tbl[key] = {}
@@ -34,7 +27,7 @@ function utils.deep_copy_table(src_tbl,des_tbl)
 	end
 end
 
-function utils.get_random_list_in_weight(total_weight,value_weight_list,count)
+function get_random_list_in_weight(total_weight,value_weight_list,count)
 	if total_weight == 0 or #value_weight_list == 0 then return end
 	local result = {}
 	if #value_weight_list <= count then
@@ -44,10 +37,9 @@ function utils.get_random_list_in_weight(total_weight,value_weight_list,count)
 		end
 		return result
 	end
-	local copy_value_weight_list = {}
-	utils.deep_copy_table(value_weight_list,copy_value_weight_list)
+	local copy_value_weight_list = copy(value_weight_list)
 	for i=1,count do
-		local random_weight = utils.get_random_int(1,total_weight)
+		local random_weight = get_random_int(1,total_weight)
 		for i,value in pairs(copy_value_weight_list) do
 			if value[2] < random_weight then
 				random_weight = random_weight - value[2]
@@ -62,9 +54,7 @@ function utils.get_random_list_in_weight(total_weight,value_weight_list,count)
 	return result
 end
 
-function utils.get_interval_timestamp(timestamp)
+function get_interval_timestamp(timestamp)
 	local temp = os.date("*t", timestamp)
 	return os.time{year=temp.year, month=temp.month, day=temp.day, hour=23} + 60 * 60
 end
-
-return utils

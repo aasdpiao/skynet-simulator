@@ -42,5 +42,3 @@ function class(super)
  
 	return class_type
 end
-
-return class

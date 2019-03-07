@@ -1,0 +1,8 @@
+unlock_achievement 1101{
+	request {
+		trains_index 0 : integer
+	}
+	response {
+		result 0 : integer
+	}
+}

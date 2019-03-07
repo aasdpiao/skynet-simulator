@@ -2,7 +2,6 @@ local skynet = require "skynet"
 local sprotoparser = require "sprotoparser"
 local sprotoloader = require "sprotoloader"
 local service = require "skynet.service"
-local syslog = require "syslog"
 
 local c2s_sproto_file = {
 	"1_role",

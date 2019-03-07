@@ -23,8 +23,6 @@ function totable(v)
     return v
 end
 
-
-
 function array_totable(array)
     if not array then
         return nil
@@ -57,8 +55,8 @@ end
 
 function copy(object)
     if not object then return object end
-     local new = {}
-     for k, v in pairs(object) do
+    local new = {}
+    for k, v in pairs(object) do
         local t = type(v)
         if t == "table" then
             new[k] = copy(v)
@@ -67,7 +65,7 @@ function copy(object)
         else
             new[k] = v
         end
-     end
+    end
     return new
 end
 
@@ -76,7 +74,6 @@ function string.split(str, delimiter)
     delimiter = tostring(delimiter)
     if (delimiter=='') then return false end
     local pos,arr = 0, {}
-    -- for each divider found
     for st,sp in function() return string.find(str, delimiter, pos, true) end do
         table.insert(arr, string.sub(str, pos, st - 1))
         pos = sp + 1
@@ -107,11 +104,8 @@ local function urlencodeChar(char)
 end
 
 function string.urlencode(str)
-    -- convert line endings
     str = string.gsub(tostring(str), "\n", "\r\n")
-    -- escape all characters but alphanumeric, '.' and '-'
     str = string.gsub(str, "([^%w%.%- ])", urlencodeChar)
-    -- convert spaces to "+" symbols
     return string.gsub(str, " ", "+")
 end
 
@@ -172,6 +166,23 @@ function string.utf8sub(str, start, last)
     return string.sub(str, startByte, len)
 end
 
+local mode = "[%z\'\"\\\26\b\n\r\t]"
+local replace = {
+    ['\0']='\\0',
+    ['\''] = '\\\'',
+    ['\"'] = '\\\"',
+    ['\\'] = '\\\\',
+    ['\26'] = '\\z',
+    ['\b'] = '\\b',
+    ['\n'] = '\\n',
+    ['\r'] = '\\r',
+    ['\t'] = '\\t',
+}
+
+function string.escape(s)
+    return string.gsub(s, mode, replace)
+end
+
 function table.empty(t)
 	return _G.next(t) == nil
 end
@@ -200,9 +211,6 @@ function table.values(t)
     return values
 end
 
---[[
-    table.zero(t, len) ==> memset(&t, 0, len)
-]]
 function table.zero(t, len)
     assert(type(t) == "table")
     for i=1, len do
@@ -210,18 +218,12 @@ function table.zero(t, len)
     end
 end
 
---[[
-    table.malloc(len) ==> malloc(len)
-]]
 function table.malloc(len)
     local t = {}
     table.zero(t, len)
     return t
 end
 
---[[
-    {a=1, b=2} ==> {a, 1, b, 2}
-]]
 function table.toarray(tb)
     if type(tb) ~= "table" then return nil end
     local info = {}
@@ -231,8 +233,6 @@ function table.toarray(tb)
     end
     return info
 end
-
-
 
 function table.tostring(root)
     if root == nil then
@@ -265,4 +265,8 @@ function table.tostring(root)
         return table.concat(temp,"\n"..space)
     end
     return (_dump(root, "",""))
+end
+
+function get_epoch_time(timestamp)
+    return os.date("%Y-%m-%d %H:%M:%S", timestamp)
 end
