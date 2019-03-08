@@ -1,5 +1,4 @@
 local skynet = require "skynet"
-local syslog = require "syslog"
 
 function LOG_DEBUG(fmt, ...)
 	local msg = string.format(fmt, ...)

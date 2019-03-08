@@ -1,14 +1,15 @@
 .PHONY: default clean
 
 TOP=$(PWD)
-LUA_CLIB_PATH ?= skynet/luaclib
+LUA_CLIB_PATH ?= luaclib
 CC ?= gcc
 LUA_INC ?= skynet/3rd/lua
 CFLAGS = -g -O2 -Wall -I$(LUA_INC)
 SHARED := -fPIC --shared
 PLAT ?= linux
 
-default : redis/src/redis skynet/skynet $(LUA_CLIB_PATH)/cjson.so $(LUA_CLIB_PATH)/log.so
+#default : redis/src/redis skynet/skynet $(LUA_CLIB_PATH)/cjson.so $(LUA_CLIB_PATH)/log.so
+default : $(LUA_CLIB_PATH)/cjson.so $(LUA_CLIB_PATH)/log.so
 
 redis/Makefile:
 	git submodule update --init
@@ -33,4 +34,5 @@ $(LUA_CLIB_PATH)/log.so : 3rd/lua-log/lua-log.c | $(LUA_CLIB_PATH)
 	$(CC) $(CFLAGS) $(SHARED) $^ -o $@
 
 clean :
+	rm -f $(LUA_CLIB_PATH)/*.so
 	cd skynet && $(MAKE) clean
