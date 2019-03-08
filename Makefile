@@ -8,8 +8,7 @@ CFLAGS = -g -O2 -Wall -I$(LUA_INC)
 SHARED := -fPIC --shared
 PLAT ?= linux
 
-#default : redis/src/redis skynet/skynet $(LUA_CLIB_PATH)/cjson.so $(LUA_CLIB_PATH)/log.so
-default : $(LUA_CLIB_PATH)/cjson.so $(LUA_CLIB_PATH)/log.so
+default : redis/src/redis skynet/skynet $(LUA_CLIB_PATH)/cjson.so $(LUA_CLIB_PATH)/log.so
 
 redis/Makefile:
 	git submodule update --init
