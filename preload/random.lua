@@ -1,6 +1,7 @@
+local random = math.random
 
 function get_random_int(mix,max)
-	return math.random(mix,max)
+	return random(mix,max)
 end
 
 function get_random_value_in_weight(total_weight, value_weight_list)

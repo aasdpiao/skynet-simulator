@@ -25,34 +25,5 @@ function RoleDispatcher:init()
     -- self:register_s2c_callback("promote_plant",self.dispatcher_promote_plant)
 end
 
--- function RoleDispatcher.dispatcher_synctime(role_object,args1,args2)
---     local time_stamp = args2.timestamp
---     role_object:get_time_manager():sync_time(time_stamp)
--- end
-
--- function RoleDispatcher.dispatcher_cmd(role_object,args1,args2)
---     if args2.result == 0 then
---         print("cmd:"..args1.cmd.." 成功")
---     else
---         print("cmd:"..args1.cmd.." 失败")
---     end
--- end
-
--- function RoleDispatcher.dispatcher_pull(role_object,args1,args2)
---     print_r(args2)
--- end
-
--- function RoleDispatcher.dispatcher_planting_cropper(role_object,args1,args2)
---     print_r(args2)   
--- end
-
--- function RoleDispatcher.dispatcher_harvest_cropper(role_object,args1,args2)
---     print_r(args2)   
--- end
-
--- function RoleDispatcher:dispatcher_promote_plant(role_object,args1,args2)
---     print_r(args2) 
--- end
-
 return RoleDispatcher
 

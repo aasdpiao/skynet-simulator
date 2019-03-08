@@ -5,9 +5,6 @@ local RoleDispatcher = require("client.role_dispatcher")
 local socket = require("client.socket")
 local TimeManger = require("client.time_manager")
 
-local RoleUnitTest = require("client.unit_test.role_unit_test")
-local SeaportUnitTest = require("client.unit_test.seaport_unit_test")
-
 local RoleObject = class()
 
 local conf = {
@@ -45,13 +42,6 @@ function RoleObject:start()
     self.__account_id = self.__socket_client:Login(self.__token)
     self.__socket_client:ConnectGameServer(self.__account_id)
 
-
-    --local role_unit_test = RoleUnitTest.new(self)
-    --role_unit_test:start_unit_test()
-
-    local seaport_unit_test = SeaportUnitTest.new(self)
-    seaport_unit_test:start_unit_test()
-    
     self.message_route(self)
 end
 
