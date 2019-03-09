@@ -50,4 +50,8 @@ GAME_ERROR = {
 	cash_not_enough    			= add{code = 0x1002, desc = "钞票不足"},
 }
 
+DB_ERROR = {
+	SQL_ERROR    			= add{code = 0x2001, desc = "SQL执行出错"},
+}
+
 return errors

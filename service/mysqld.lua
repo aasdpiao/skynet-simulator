@@ -7,8 +7,8 @@ local gamedbtable = require "db.gamedb"
 local accountprocedure = require "db.accountprocedure"
 local gameprocedure = require "db.gameprocedure"
 
-local township_accountdb = skynet.getenv "township_accountdb"
-local township_gamedb = skynet.getenv "township_gamedb"
+local township_accountdb = skynet.getenv "accountdb"
+local township_gamedb = skynet.getenv "gamedb"
 
 local mysqlhost = skynet.getenv "mysqlhost"
 local mysqlport = tonumber(skynet.getenv "mysqlport")

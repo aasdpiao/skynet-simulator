@@ -20,13 +20,12 @@ skynet.start(function()
 	--初始化redis
 	skynet.uniqueservice "redisd"
 	skynet.call("redisd", "lua", "start")
-	-- --初始化推荐系统
-	-- skynet.uniqueservice "recommend"
-	-- skynet.call("recommend", "lua", "start")
-	-- --初始化时间管理器
-	-- skynet.uniqueservice "timed"
-	-- --初始化web服务器
-	-- skynet.uniqueservice "httpd"
+	--初始化推荐系统
+	skynet.uniqueservice "recommend"
+	--初始化时间管理器
+	skynet.uniqueservice "timed"
+	--初始化web服务器
+	skynet.uniqueservice "httpd"
 	-- --启动登录服务器
 	-- local loginserver = skynet.newservice("logind")
 	-- --启动网关

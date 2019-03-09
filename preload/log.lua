@@ -1,5 +1,3 @@
-local skynet = require "skynet"
-
 function LOG_DEBUG(fmt, ...)
 	local msg = string.format(fmt, ...)
 	local info = debug.getinfo(2)
