@@ -5,18 +5,28 @@
 [:01000004] master listen socket 0.0.0.0:2013
 [:01000005] LAUNCH snlua cslave
 [:01000005] slave connect to master 127.0.0.1:2013
-[:01000004] connect from 127.0.0.1:59534 4
 [:01000006] LAUNCH harbor 1 16777221
+[:01000004] connect from 127.0.0.1:7371 4
 [:01000004] Harbor 1 (fd=4) report 127.0.0.1:2526
 [:01000005] Waiting for 0 harbors
 [:01000005] Shakehand ready
 [:01000007] LAUNCH snlua datacenterd
 [:01000008] LAUNCH snlua service_mgr
 [:01000009] LAUNCH snlua main
-[:01000009] lua loader error : ./skynet/lualib/loader.lua:24: cannot open ./server/main.lua: No such file or directory
-cannot open ./skynet/service/main.lua: No such file or directory
-stack traceback:
-	[C]: in function 'error'
-	./skynet/lualib/loader.lua:24: in main chunk
+[:0100000a] LAUNCH snlua logd
+[:0100000b] LAUNCH snlua debug_console 8000
+[:0100000b] Start debug console at 127.0.0.1:8000
+[:0100000c] LAUNCH snlua sprotod
+[:0100000c] D|load c2s sproto in slot 1
+[:0100000c] D|load s2c sproto in slot 2
+[:0100000d] LAUNCH snlua configd
+[:0100000e] LAUNCH snlua mysqld
+[:0100000e] success to connect to mysql server
+[:0100000e] success to create database
+[:0100000e] success to create table
+[:0100000e] success to create procedure
+[:0100000e] success to create database
+[:0100000e] success to create table
+[:0100000e] success to create procedure
 [:01000009] KILL self
 [:01000002] KILL self

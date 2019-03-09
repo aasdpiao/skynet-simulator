@@ -11,15 +11,15 @@ skynet.start(function()
 	end
 
     skynet.newservice("debug_console",debug_console_port)
-	-- --加载协议
-	-- skynet.newservice "sprotod"
-	-- --加载配置文件
-	-- skynet.newservice "configd"
-	-- --初始化数据库
-	-- skynet.uniqueservice "mysqld"
-	-- --初始化redis
-	-- skynet.uniqueservice "redisd"
-	-- skynet.call("redisd", "lua", "start")
+	--加载协议
+	skynet.newservice "sprotod"
+	--加载配置文件
+	skynet.newservice "configd"
+	--初始化数据库
+	skynet.uniqueservice "mysqld"
+	--初始化redis
+	skynet.uniqueservice "redisd"
+	skynet.call("redisd", "lua", "start")
 	-- --初始化推荐系统
 	-- skynet.uniqueservice "recommend"
 	-- skynet.call("recommend", "lua", "start")

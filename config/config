@@ -25,7 +25,6 @@ mysqlhost = "127.0.0.1"
 mysqlport = 3306
 township_accountdb = "game_accountdb"
 township_gamedb = "game_gamedb"
-township_globaldb = "game_globaldb"
 --redis
 
 redis_maxinst = 1			-- redis最大实例数
