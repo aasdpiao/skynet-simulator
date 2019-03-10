@@ -24,7 +24,7 @@ local function getconn(uid)
 	return db
 end
 
-function CMD.start()
+local function start()
 	local db = redis.connect{
 	host = skynet.getenv("redis_host"),
 	port = skynet.getenv("redis_port"),
@@ -303,6 +303,8 @@ function CMD.get_thumb_up(uid)
 end
 
 skynet.start(function()
+	start()
+	
 	skynet.dispatch("lua", function(session, source, cmd, ...)
 		local f = assert(CMD[cmd], cmd .. "not found")
 		skynet.retpack(f(...))

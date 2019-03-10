@@ -20,6 +20,7 @@ debug_console_port = 8000
 game_port = 8888
 login_port = 8001
 http_port = 8002
+register_port = 8003
 --Êý¾Ý¿â
 mysqlhost = "127.0.0.1"
 mysqlport = 3306

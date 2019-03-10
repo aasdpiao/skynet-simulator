@@ -43,6 +43,7 @@ AUTH_ERROR = {
 	account_not_exist  = add{code = 0x0105, desc = "不存在此帐号"},
 	password_wrong     = add{code = 0x0106, desc = "密码错误"},
 	player_not_exist   = add{code = 0x0107, desc = "对应的玩家不存在"},
+	forbid_login       = add{code = 0x0108, desc = "禁止登陆"},
 }
 
 GAME_ERROR = {
