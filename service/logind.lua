@@ -16,12 +16,12 @@ function server.auth_handler(token)
 	local user, server, password = token:match("([^@]+)@([^:]+):(.+)")
 	user = crypt.base64decode(user)
 	server = crypt.base64decode(server)
-    password = crypt.base64decode(password)
-    local sql = string.format("call check_account_and_password('%s', '%s')",user,password)
+	password = crypt.base64decode(password)
+	local sql = string.format("call check_account_and_password('%s', '%s')",user,password)
 	local ret = skynet.call("mysqld","lua","queryaccountdb",sql)
-    local retcode = ret[1][1][1]
+	local retcode = ret[1][1][1]
 	local account_id= ret[1][1][2]
-    assert(retcode == "200", "Invalid password")
+	assert(retcode == "200", "Invalid password")
 	return server, user, account_id
 end
 
@@ -35,9 +35,8 @@ function server.login_handler(server, user, account_id, secret)
 	if user_online[account_id] then
 		error(string.format("user %s is already online", user))
 	end
-	skynet.call(gameserver, "lua", "login", account_id, secret)
-	user_online[account_id] = { address = gameserver, account_id = account_id , server = server, user = user}
-	return account_id
+	skynet.call(gameserver, "lua", "login", user, account_id, secret)
+	user_online[account_id] = { address = gameserver, account_id = account_id}
 end
 
 local CMD = {}
@@ -46,11 +45,11 @@ function CMD.register_gate(server, address)
 	server_list[server] = address
 end
 
-function CMD.logout(uid, subid)
-	local u = user_online[uid]
+function CMD.logout(account_id)
+	local u = user_online[account_id]
 	if u then
 		print(string.format("%s@%s is logout", uid, u.server))
-		user_online[uid] = nil
+		user_online[account_id] = nil
 	end
 end
 

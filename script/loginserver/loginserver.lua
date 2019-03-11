@@ -135,7 +135,7 @@ local function accept(conf, s, fd, addr)
 		user_login[account_id] = true
 	end
 
-	local ok, err = pcall(conf.login_handler, server, user, account_id, secret)
+	local ok = pcall(conf.login_handler, server, user, account_id, secret)
 	-- unlock login
 	user_login[account_id] = nil
 

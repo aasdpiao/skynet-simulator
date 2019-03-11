@@ -51,7 +51,7 @@ if mode == "agent" then
 else
     skynet.start(function()
         local agent = {}
-        for i= 1, 20 do
+        for i= 1, 8 do
             agent[i] = skynet.newservice(SERVICE_NAME, "agent")
         end
         local balance = 1

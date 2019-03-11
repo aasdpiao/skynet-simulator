@@ -7,22 +7,22 @@ skynet.register_protocol {
 }
 
 local gate
-local userid, subid
+local account_name,account_id
 
 local CMD = {}
 
-function CMD.login(source, uid, sid, secret)
+function CMD.login(source,aname, aid, secret)
 	-- you may use secret to make a encrypted data stream
 	skynet.error(string.format("%s is login", uid))
 	gate = source
-	userid = uid
-	subid = sid
+	account_name = aname
+	account_id = aid
 	-- you may load user data from database
 end
 
 local function logout()
 	if gate then
-		skynet.call(gate, "lua", "logout", userid, subid)
+		skynet.call(gate, "lua", "logout", account_id)
 	end
 	skynet.exit()
 end
@@ -31,11 +31,6 @@ function CMD.logout(source)
 	-- NOTICE: The logout MAY be reentry
 	skynet.error(string.format("%s is logout", userid))
 	logout()
-end
-
-function CMD.afk(source)
-	-- the connection is broken, but the user may back
-	skynet.error(string.format("AFK"))
 end
 
 skynet.start(function()

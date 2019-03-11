@@ -1,4 +1,4 @@
-local msgserver = require "snax.msgserver"
+local msgserver = require "gameserver.msgserver"
 local crypt = require "skynet.crypt"
 local skynet = require "skynet"
 local RoleObject = require "role.role_object"
@@ -8,46 +8,51 @@ local loginservice = tonumber(...)
 local server = {}
 local users = {}
 local username_map = {}
+local servername
+
+local role_objects = {}
+
+
+local function get_role_object(account_id)
+	local role_object = role_objects[account_id]
+	if not role_object then
+		local agent = skynet.newservice "agent"
+		role_object = RoleObject.new(account_id,agent)
+		role_objects[account_id] = role_object
+	end
+	return role_object
+end
+
 
 -- login server disallow multi login, so login_handler never be reentry
 -- call by login server
-function server.login_handler(uid, secret)
-	if users[uid] then
-		error(string.format("%s is already login", uid))
+function server.login_handler(account_name,account_id,secret)
+	if users[account_id] then
+		error(string.format("%s is already login", account_name))
 	end
-	local username = msgserver.username(uid, id, servername)
-
+	local username = msgserver.username(account_name, account_id, servername)
+	local fd = msgserver.fd(username)
 	-- you can use a pool to alloc new agent
-    local agent = skynet.newservice "agent"
-    
-    local u = RoleObject.new()
-	local u = {
-		username = username,
-		agent = agent,
-		uid = uid,
-		subid = id,
-	}
+	local role_object = get_role_object(account_id)
+	role_object:set_client_fd(fd)
 
 	-- trash subid (no used)
-	skynet.call(agent, "lua", "login", uid, id, secret)
+	skynet.call(role_object:get_agent(), "lua", "login", uid, id, secret)
 
-	users[uid] = u
-	username_map[username] = u
+	users[account_id] = role_object
+	username_map[username] = role_object
 
 	msgserver.login(username, secret)
-
-	-- you should return unique subid
-	return id
 end
 
 -- call by agent
-function server.logout_handler(uid, subid)
-	local u = users[uid]
+function server.logout_handler(account_id)
+	local u = users[account_id]
 	if u then
 		local username = msgserver.username(uid, subid, servername)
 		assert(u.username == username)
 		msgserver.logout(u.username)
-		users[uid] = nil
+		users[account_id] = nil
 		username_map[u.username] = nil
 		skynet.call(loginservice, "lua", "logout",uid, subid)
 	end
@@ -73,9 +78,9 @@ function server.disconnect_handler(username)
 end
 
 -- call by self (when recv a request from client)
-function server.request_handler(username, msg)
+function server.request_handler(username, msg, sz)
 	local u = username_map[username]
-	return skynet.tostring(skynet.rawcall(u.agent, "client", msg))
+	skynet.rawsend(u.agent, "client", msg, sz)
 end
 
 -- call by self (when gate open)
