@@ -12,16 +12,16 @@ bootstrap = "snlua bootstrap"
 standalone = "0.0.0.0:2013"
 -- snax_interface_g = "snax_g"
 daemon = "./skynet.pid"
---ÈÕÖ¾ÅäÖÃ
+--æ—¥å¿—é…ç½®
 log_dirname = root.."log"
 log_basename = "game"
---ÓÎÏ·¶Ë¿Ú
+--æ¸¸æˆç«¯å£
 debug_console_port = 8000
 game_port = 8888
 login_port = 8001
 http_port = 8002
 register_port = 8003
---Êı¾İ¿â
+--æ•°æ®åº“
 mysqlhost = "127.0.0.1"
 mysqlport = 3306
 
@@ -29,8 +29,8 @@ accountdb = "game_accountdb"
 gamedb = "game_gamedb"
 --redis
 
-redis_maxinst = 1			-- redis×î´óÊµÀıÊı
+redis_maxinst = 1			-- redisæœ€å¤§å®ä¾‹æ•°
 
-redis_host = "127.0.0.1"	-- redisÊı¾İ¿âIP
-redis_port = 6379			-- redisÊı¾İ¿â¶Ë¿Ú
-redis_auth = "123456"		-- redisÊı¾İ¿âÃÜÂë
+redis_host = "127.0.0.1"	-- redisæ•°æ®åº“IP
+redis_port = 6379			-- redisæ•°æ®åº“ç«¯å£
+redis_auth = "123456"		-- redisæ•°æ®åº“å¯†ç 

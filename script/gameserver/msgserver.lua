@@ -105,11 +105,6 @@ function server.logout(username)
 	end
 end
 
-function server.fd(username)
-	local u = user_online[username]
-	return u.fd
-end
-
 function server.login(username, secret)
 	assert(user_online[username] == nil)
 	user_online[username] = {
@@ -129,8 +124,6 @@ function server.ip(username)
 end
 
 function server.start(conf)
-	local expired_number = conf.expired_number or 128
-
 	local handler = {}
 
 	local CMD = {
@@ -167,7 +160,7 @@ function server.start(conf)
 	end
 
 	handler.error = handler.disconnect
-
+	local auth_handler = assert(conf.auth_handler)
 	-- atomic , no yield
 	local function do_auth(fd, message, addr)
 		local username, index, hmac = string.match(message, "([^:]*):([^:]*):([^:]*)")
@@ -187,11 +180,11 @@ function server.start(conf)
 		if v ~= hmac then
 			return "401 Unauthorized"
 		end
-
 		u.version = idx
 		u.fd = fd
 		u.ip = addr
 		connection[fd] = u
+		auth_handler(username,fd)
 	end
 
 	local function auth(fd, addr, msg, sz)
@@ -219,7 +212,7 @@ function server.start(conf)
 
 	local function request(fd, msg, sz)
 		local u = assert(connection[fd], "invalid fd")
-		local ok, err = pcall(conf.request_handler, u.username, msg, sz)
+		local ok, err = pcall(request_handler, u.username, msg, sz)
 		if not ok then
 			skynet.error(string.format("Invalid package %s", err))
 			if connection[fd] then
