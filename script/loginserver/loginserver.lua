@@ -34,6 +34,7 @@ Success:
 ]]
 
 local socket_error = {}
+
 local function assert_socket(service, v, fd)
 	if v then
 		return v
@@ -44,7 +45,19 @@ local function assert_socket(service, v, fd)
 end
 
 local function write(service, fd, text)
-	assert_socket(service, socket.write(fd, text), fd)
+	local package = string.pack (">s2", text)
+	assert_socket(service, socket.write(fd, package), fd)
+end
+
+local function read (fd, size)
+	return socket.read (fd, size) or error ()
+end
+
+local function read_msg (fd)
+	local s = read (fd, 2)
+	local size = s:byte(1) * 256 + s:byte(2)
+	local package = read (fd, size)
+	return package
 end
 
 local function launch_slave(auth_handler)
@@ -52,34 +65,25 @@ local function launch_slave(auth_handler)
 		-- set socket buffer limit (8K)
 		-- If the attacker send large package, close the socket
 		socket.limit(fd, 8192)
-
 		local challenge = crypt.randomkey()
-		write("auth", fd, crypt.base64encode(challenge).."\n")
-
-		local handshake = assert_socket("auth", socket.readline(fd), fd)
+		write("auth", fd, crypt.base64encode(challenge))
+		local handshake = assert_socket("auth", read_msg(fd), fd)
 		local clientkey = crypt.base64decode(handshake)
 		if #clientkey ~= 8 then
 			error "Invalid client key"
 		end
 		local serverkey = crypt.randomkey()
-		write("auth", fd, crypt.base64encode(crypt.dhexchange(serverkey)).."\n")
-
+		write("auth", fd, crypt.base64encode(crypt.dhexchange(serverkey)))
 		local secret = crypt.dhsecret(clientkey, serverkey)
-
-		local response = assert_socket("auth", socket.readline(fd), fd)
+		local response = assert_socket("auth", read_msg(fd), fd)
 		local hmac = crypt.hmac64(challenge, secret)
-
 		if hmac ~= crypt.base64decode(response) then
-			write("auth", fd, "400 Bad Request\n")
+			write("auth", fd, "400 Bad Request")
 			error "challenge failed"
 		end
-
-		local etoken = assert_socket("auth", socket.readline(fd),fd)
-
+		local etoken = assert_socket("auth", read_msg(fd),fd)
 		local token = crypt.desdecode(secret, crypt.base64decode(etoken))
-
 		local ok, server, user, account_id =  pcall(auth_handler,token)
-
 		return ok, server, user, account_id, secret
 	end
 
@@ -122,14 +126,14 @@ local function accept(conf, s, fd, addr)
 
 	if not ok then
 		if ok ~= nil then
-			write("response 401", fd, "401 Unauthorized\n")
+			write("response 401", fd, "401 Unauthorized")
 		end
 		error(server)
 	end
 
 	if not conf.multilogin then
 		if user_login[account_id] then
-			write("response 406", fd, "406 Not Acceptable\n")
+			write("response 406", fd, "406 Not Acceptable")
 			error(string.format("User %s is already login", account_id))
 		end
 
@@ -141,9 +145,9 @@ local function accept(conf, s, fd, addr)
 	user_login[account_id] = nil
 
 	if ok then
-		write("response 200",fd,  "200 "..crypt.base64encode(account_id).."\n")
+		write("response 200",fd,  "200 "..crypt.base64encode(account_id))
 	else
-		write("response 403",fd,  "403 Forbidden\n")
+		write("response 403",fd,  "403 Forbidden")
 		error(err)
 	end
 end

@@ -22,7 +22,7 @@ function server.auth_handler(token)
 	local ret = skynet.call("mysqld","lua","queryaccountdb",sql)
 	local retcode = ret[1][1][1]
 	local account_id= ret[1][1][2]
-	assert(retcode == "200", "Invalid password")
+	assert(retcode == 200, "Invalid password"..retcode)
 	return server, user, account_id
 end
 

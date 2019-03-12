@@ -107,6 +107,7 @@ end
 
 function server.login(username, secret)
 	assert(user_online[username] == nil)
+	skynet.error("login",username)
 	user_online[username] = {
 		secret = secret,
 		version = 0,
@@ -164,6 +165,7 @@ function server.start(conf)
 	-- atomic , no yield
 	local function do_auth(fd, message, addr)
 		local username, index, hmac = string.match(message, "([^:]*):([^:]*):([^:]*)")
+		skynet.error(username)
 		local u = user_online[username]
 		if u == nil then
 			return "404 User Not Found"

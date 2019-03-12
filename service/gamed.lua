@@ -14,7 +14,7 @@ local agents = {}
 local function get_agent()
 	local agent = table.remove(agents)
 	if not agent then
-		local agent = skynet.newservice "agent"
+		agent = skynet.newservice "agent"
 	end
 	return agent
 end

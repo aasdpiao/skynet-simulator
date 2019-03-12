@@ -109,12 +109,10 @@ function SocketClient:recv_message (last)
 end
 
 function SocketClient:encode_token()
-	return string.format("%s@%s#%s:%s",
+	return string.format("%s@%s:%s",
 		crypt.base64encode(self.__token.user),
 		crypt.base64encode(self.__token.server),
-		crypt.base64encode(self.__token.pass),
-		1
-	)
+		crypt.base64encode(self.__token.pass))
 end
 
 function SocketClient:Login()
@@ -152,7 +150,7 @@ function SocketClient:ConnectGameServer(account_id)
 	local last = ""
 	self.__fd = assert(socket.connect(self.__game_address, self.__game_port))
 	-- base64(account_id)@base64(server)
-	local handshake = string.format("%s@%s:%d", crypt.base64encode(account_id), crypt.base64encode(self.__token.server), 1)
+	local handshake = string.format("%s@%s#%s:%d", crypt.base64encode(self.__token.user), crypt.base64encode(self.__token.server),crypt.base64encode(account_id), 1)
 	local hmac = crypt.hmac64(crypt.hashkey(handshake), self.__secret)
 	self:send_message(handshake .. ":" .. crypt.base64encode(hmac))
 	print(self:recv_message(last)())   

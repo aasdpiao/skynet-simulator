@@ -5,8 +5,8 @@
 [:01000004] master listen socket 0.0.0.0:2013
 [:01000005] LAUNCH snlua cslave
 [:01000005] slave connect to master 127.0.0.1:2013
+[:01000004] connect from 127.0.0.1:7979 4
 [:01000006] LAUNCH harbor 1 16777221
-[:01000004] connect from 127.0.0.1:10066 4
 [:01000004] Harbor 1 (fd=4) report 127.0.0.1:2526
 [:01000005] Waiting for 0 harbors
 [:01000005] Shakehand ready
@@ -62,6 +62,9 @@
 [:0100002e] Listen on 0.0.0.0:8888
 [:01000009] KILL self
 [:01000002] KILL self
-[:01000026] connect from 127.0.0.1:10339 (fd = 33)
-[:01000026] auth failed: socket (fd = 33) closed
-[:01000025] invalid client (fd = 33) error = ./script/loginserver/loginserver.lua:127: socket error
+[:01000026] connect from 127.0.0.1:8012 (fd = 33)
+[:0100002f] LAUNCH snlua agent
+[:0100002f] zdq is login
+[:0100002e] login emRx@dG93bnNoaXA=#MTAwMDAwMA==
+[:0100002e] emRx@dG93bnNoaXA=#MTAwMDAwMA==
+[:0100002f] AFK

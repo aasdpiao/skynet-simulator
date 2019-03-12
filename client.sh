@@ -1,0 +1,1 @@
+lua ./client/main.lua
