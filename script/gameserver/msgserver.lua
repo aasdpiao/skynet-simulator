@@ -172,7 +172,6 @@ function server.start(conf)
 	-- atomic , no yield
 	local function do_auth(fd, message, addr)
 		local username, index, hmac = string.match(message, "([^:]*):([^:]*):([^:]*)")
-		skynet.error(username)
 		local u = user_online[username]
 		if u == nil then
 			return "404 User Not Found"

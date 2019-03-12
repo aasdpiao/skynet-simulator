@@ -83,7 +83,7 @@ local CMD = {}
 
 function CMD.login(source, name, id, secret)
 	-- you may use secret to make a encrypted data stream
-	skynet.error(string.format("%s is login", name))
+	skynet.error(string.format("agent : %s is login", name))
 	gate = source
 	account_name = name
 	account_id = id
@@ -93,21 +93,44 @@ function CMD.login(source, name, id, secret)
 end
 
 function CMD.reenter(source, name, id, secret)
-	skynet.error(string.format("%s is reenter", name))
+	skynet.error(string.format("agent : %s is reenter", name))
+	if CMD.cancel then
+		CMD.cancel()
+		CMD.cancel = nil
+	end
 end
 
 function CMD.logout(source)
 	-- NOTICE: The logout MAY be reentry
-	skynet.error(string.format("%s is logout", account_name))
+	skynet.error(string.format("agent : %s is logout", account_name))
 	if gate then
 		skynet.call(gate, "lua", "logout", account_name, account_id)
 	end
 	skynet.exit()
 end
 
+local function cancelable_timeout(ti, func)
+	local function cb()
+		if func then
+			func()
+	  	end
+	end
+	local function cancel()
+		func = nil
+	end
+	skynet.timeout(ti, cb)
+	return cancel
+end
+
 function CMD.disconnect(source)
-	-- the connection is broken, but the user may back
-	skynet.error(string.format("AFK"))
+	skynet.error(string.format("agent : %s is disconnect", account_name))
+	CMD.cancel = cancelable_timeout(200, function()
+		skynet.error(string.format("agent : %s is timeout logout", account_name))
+		if gate then
+			skynet.call(gate, "lua", "logout", account_name, account_id)
+		end
+		skynet.exit()
+	end)
 end
 
 function CMD.auth_handler(source,fd)
