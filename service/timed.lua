@@ -1,3 +1,4 @@
+local skynet = require "skynet"
 require "skynet.manager"
 local multicast = require "skynet.multicast"
 local datacenter = require "skynet.datacenter"

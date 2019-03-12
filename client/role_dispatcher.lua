@@ -1,6 +1,3 @@
-local class = require("class")
-local print_r = require("print_r")
-
 local RoleDispatcher = class()
 
 function RoleDispatcher:ctor()

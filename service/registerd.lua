@@ -18,9 +18,25 @@ if mode == "agent" then
     end
 
     --处理注册问题
-    function requst_register(params)
-        local args = cjson.encode(params)
-        return skynet.call("gamed","lua","http",args)
+    local function requst_register(params)
+        local username = params.username
+        local password = params.password
+        if not username or not password then
+            return "用户名或密码为空,参数错误"
+        end
+        local sql = string.format("call register_new_account('%s', '%s', '%s')",username,password,"game")
+        local ret = skynet.call("mysqld","lua","queryaccountdb",sql,true)
+        local retcode = ret[1][1][1]
+        local account_id = ret[1][1][2]
+        skynet.error(retcode)
+        skynet.error(account_id)
+        if retcode == 101 then
+            return "用户名已注册"
+        elseif retcode == 100 then
+            sql = string.format("call new_player(%d,%s)",account_id,""..account_id)
+            skynet.call("mysqld","lua","querygamedb",sql,true)
+            return "注册成功"
+        end
     end
 
     skynet.start(function()

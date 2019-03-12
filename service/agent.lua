@@ -1,3 +1,4 @@
+local skynet = require "skynet"
 local sprotoloader = require "sprotoloader"
 local socketdriver = require "skynet.socketdriver"
 local RoleObject = require "role.role_object"

@@ -1,3 +1,4 @@
+local skynet = require "skynet"
 local login = require "loginserver.loginserver"
 local crypt = require "skynet.crypt"
 

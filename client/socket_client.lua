@@ -1,61 +1,41 @@
 local class = require("class")
-local print_r = require("print_r")
 local socket = require("client.socket")
 local crypt = require("client.crypt")
 local sprotoparser = require("sprotoparser")
 local sproto = require("sproto")
 
-local c2s_sproto_file = {
-	"1_role",
-	"2_plant",
-	"3_grid",
-	"4_time",
-	"5_factory",
-	"6_breed",
-	"7_trains",
-	"8_seaport",
-	"9_flight",
-	"10_helicopter",
-	"11_achievement",
-	"12_market",
-	"13_employment",
-}
-
-local s2c_sproto_file = {
-
-}
+local c2s_sproto_file = SPROTO_FILE.c2s
+local s2c_sproto_file = SPROTO_FILE.s2c
 
 local SocketClient = class()
 
 function SocketClient:ctor(role_object,conf,token)
-    self.__role_object = role_object
-    self.__login_address = conf.login_address
-    self.__login_port = conf.login_port
-    self.__game_address = conf.game_address
-    self.__game_port = conf.game_port
+	self.__role_object = role_object
+	self.__login_address = conf.login_address
+	self.__login_port = conf.login_port
+	self.__game_address = conf.game_address
+	self.__game_port = conf.game_port
 
-    self.__token = token
-    self.__fd = 0
-    self.__secret = ""
+	self.__token = token
+	self.__fd = 0
+	self.__secret = ""
 
-    self.__session = {}
-    self.__session_id = 0
+	self.__session = {}
+	self.__session_id = 0
 
-    self.__host = 0
-    self.__request = 0
+	self.__host = 0
+	self.__request = 0
 end
 
-
-
 function SocketClient:init()
-    local c2s_proto = self:load_c2s_sproto()
-    local s2c_proto = self:load_s2c_sproto()
-    self.__host = sproto.new (s2c_proto):host "package"
-    self.__request = self.__host:attach (sproto.new (c2s_proto))
+	local c2s_proto = self:load_c2s_sproto()
+	local s2c_proto = self:load_s2c_sproto()
+	self.__host = sproto.new (s2c_proto):host "package"
+	self.__request = self.__host:attach (sproto.new (c2s_proto))
 end
 
 function SocketClient:read(name)
-	local filename = string.format("proto/%s.sproto", name)
+	local filename = string.format("protocal/%s.sproto", name)
 	local f = assert(io.open(filename), "Can't open " .. filename)
 	local t = f:read "a"
 	f:close()
@@ -63,7 +43,7 @@ function SocketClient:read(name)
 end
 
 function SocketClient:load_c2s_sproto()
-	local attr = self:read("proto.attr")
+	local attr = self:read("attr")
 	local sp = "\n"
 	for i,file_name in ipairs(c2s_sproto_file) do
 		local name = "c2s/"..file_name
@@ -73,7 +53,7 @@ function SocketClient:load_c2s_sproto()
 end
 
 function SocketClient:load_s2c_sproto()
-	local attr = self:read("proto.attr")
+	local attr = self:read("attr")
 	local sp = "\n"
 	for i,file_name in ipairs(s2c_sproto_file) do
 		local name = "s2c/"..file_name
@@ -133,91 +113,63 @@ function SocketClient:encode_token()
 		crypt.base64encode(self.__token.user),
 		crypt.base64encode(self.__token.server),
 		crypt.base64encode(self.__token.pass),
-		crypt.base64encode(self.__token.request_type)
+		1
 	)
 end
 
-function SocketClient:Register()
+function SocketClient:Login()
 	local last = ""
-    self.__fd = socket.connect(self.__login_address, self.__login_port)
-    local challenge = crypt.base64decode(self:recv_message(last)())
+	self.__fd = socket.connect(self.__login_address, self.__login_port)
+	local challenge = crypt.base64decode(self:recv_message(last)())
 
-    local clientkey = crypt.randomkey()
-    self:send_message(crypt.base64encode(crypt.dhexchange(clientkey)))
+	local clientkey = crypt.randomkey()
+	self:send_message(crypt.base64encode(crypt.dhexchange(clientkey)))
 
-    local secret = crypt.dhsecret(crypt.base64decode(self:recv_message(last)()), clientkey)
+	local secret = crypt.dhsecret(crypt.base64decode(self:recv_message(last)()), clientkey)
 
-    self.__secret = secret
+	self.__secret = secret
 
-    print("sceret is ", crypt.hexencode(secret))
+	print("sceret is ", crypt.hexencode(secret))
 
-    local hmac = crypt.hmac64(challenge, secret)
+	local hmac = crypt.hmac64(challenge, secret)
 	self:send_message(crypt.base64encode(hmac))
-	
-    local etoken = crypt.desencode(secret, self:encode_token())
+
+
+	etoken = crypt.desencode(secret, self:encode_token())
 	self:send_message(crypt.base64encode(etoken))
 
 	local result = self:recv_message(last)()
-
 	print(result)
+	local code = tonumber(string.sub(result, 1, 3))
+	assert(code == 200)
 	socket.close(self.__fd)
 	self.__fd = 0
-end
-
-function SocketClient:Login()
-    local last = ""
-    self.__fd = socket.connect(self.__login_address, self.__login_port)
-    local challenge = crypt.base64decode(self:recv_message(last)())
-
-    local clientkey = crypt.randomkey()
-    self:send_message(crypt.base64encode(crypt.dhexchange(clientkey)))
-
-    local secret = crypt.dhsecret(crypt.base64decode(self:recv_message(last)()), clientkey)
-
-    self.__secret = secret
-
-    print("sceret is ", crypt.hexencode(secret))
-
-    local hmac = crypt.hmac64(challenge, secret)
-    self:send_message(crypt.base64encode(hmac))
-
-    self.__token.request_type = "login"
-
-    etoken = crypt.desencode(secret, self:encode_token())
-    self:send_message(crypt.base64encode(etoken))
-
-    local result = self:recv_message(last)()
-	print(result)
-    local code = tonumber(string.sub(result, 1, 3))
-    assert(code == 200)
-    socket.close(self.__fd)
-    self.__fd = 0
-    local account_id = crypt.base64decode(string.sub(result, 5))
-    return tonumber(account_id)
+	local account_id = crypt.base64decode(string.sub(result, 5))
+	return tonumber(account_id)
 end
 
 function SocketClient:ConnectGameServer(account_id)
-    local last = ""
-    self.__fd = assert(socket.connect(self.__game_address, self.__game_port))
-    -- base64(account_id)@base64(server)
-    local handshake = string.format("%s@%s:%d", crypt.base64encode(account_id), crypt.base64encode(self.__token.server), 1)
-    local hmac = crypt.hmac64(crypt.hashkey(handshake), self.__secret)
-    self:send_message(handshake .. ":" .. crypt.base64encode(hmac))
-    print(self:recv_message(last)())   
+	local last = ""
+	self.__fd = assert(socket.connect(self.__game_address, self.__game_port))
+	-- base64(account_id)@base64(server)
+	local handshake = string.format("%s@%s:%d", crypt.base64encode(account_id), crypt.base64encode(self.__token.server), 1)
+	local hmac = crypt.hmac64(crypt.hashkey(handshake), self.__secret)
+	self:send_message(handshake .. ":" .. crypt.base64encode(hmac))
+	print(self:recv_message(last)())   
 end
 
 function SocketClient:send_request (name, args)
 	print("send_request :"..name)
-    self.__session_id = self.__session_id + 1
-    local str = self.__request(name, args,self.__session_id)
-    self:send_message ( str)
-    self.__session[self.__session_id] = { name = name, args = args }
+	self.__session_id = self.__session_id + 1
+	local str = self.__request(name, args,self.__session_id)
+	self:send_message ( str)
+	self.__session[self.__session_id] = { name = name, args = args }
 end
 
 function SocketClient:dispatch_message()
-    local last = ""
+	local last = ""
 	local msg = self:recv_message(last)()
-	self:handle_message (self.__host:dispatch (msg))    
+	self:handle_message (self.__host:dispatch (msg))	
 end
 
 function SocketClient:handle_message (t, ...)

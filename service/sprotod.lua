@@ -1,3 +1,4 @@
+local skynet = require "skynet"
 local sprotoparser = require "sprotoparser"
 local sprotoloader = require "sprotoloader"
 local service = require "skynet.service"
@@ -38,9 +39,7 @@ end
 
 skynet.start(function()
 	local c2s = load_c2s_sproto()
-	syslog.debugf("load c2s sproto in slot %d", MSG.c2s)
 	sprotoloader.save(c2s, MSG.c2s)
 	local s2c = load_s2c_sproto()
-	syslog.debugf("load s2c sproto in slot %d", MSG.s2c)
 	sprotoloader.save(s2c, MSG.s2c)
 end)

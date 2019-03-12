@@ -1,3 +1,4 @@
+local skynet = require "skynet"
 local mysql = require "skynet.db.mysql"
 require "skynet.manager"
 
@@ -190,5 +191,5 @@ skynet.start(function()
             skynet.ret(skynet.pack(f(...)))
         end
     end)
-	skynet.register(SERVICE_NAME)
+    skynet.register(SERVICE_NAME)
 end)

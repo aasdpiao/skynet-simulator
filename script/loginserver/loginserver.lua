@@ -1,3 +1,4 @@
+local skynet = require "skynet"
 require "skynet.manager"
 local socket = require "skynet.socket"
 local crypt = require "skynet.crypt"

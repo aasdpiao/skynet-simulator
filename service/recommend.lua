@@ -1,3 +1,4 @@
+local skynet = require "skynet"
 local cjson = require "cjson"
 local redis = require "skynet.db.redis"
 require "skynet.manager"

@@ -9,9 +9,9 @@ local RoleObject = class()
 
 local conf = {
     login_address = "127.0.0.1",
-    login_port = 6001,
+    login_port = 8001,
     game_address = "127.0.0.1",
-    game_port = 6666
+    game_port = 8888
 }
 
 function RoleObject:ctor(token)
@@ -38,7 +38,6 @@ function RoleObject:get_time_manager()
 end
 
 function RoleObject:start()
-    self.__account_id = self.__socket_client:Register(self.__token)
     self.__account_id = self.__socket_client:Login(self.__token)
     self.__socket_client:ConnectGameServer(self.__account_id)
 

@@ -6,7 +6,7 @@
 [:01000005] LAUNCH snlua cslave
 [:01000005] slave connect to master 127.0.0.1:2013
 [:01000006] LAUNCH harbor 1 16777221
-[:01000004] connect from 127.0.0.1:36541 4
+[:01000004] connect from 127.0.0.1:10066 4
 [:01000004] Harbor 1 (fd=4) report 127.0.0.1:2526
 [:01000005] Waiting for 0 harbors
 [:01000005] Shakehand ready
@@ -17,8 +17,6 @@
 [:0100000b] LAUNCH snlua debug_console 8000
 [:0100000b] Start debug console at 127.0.0.1:8000
 [:0100000c] LAUNCH snlua sprotod
-[:0100000c] D|load c2s sproto in slot 1
-[:0100000c] D|load s2c sproto in slot 2
 [:0100000d] LAUNCH snlua configd
 [:0100000e] LAUNCH snlua mysqld
 [:0100000e] success to connect to mysql server
@@ -39,18 +37,31 @@
 [:01000019] LAUNCH snlua httpd agent
 [:0100001a] LAUNCH snlua httpd agent
 [:0100001b] LAUNCH snlua httpd agent
-[:0100001c] LAUNCH snlua httpd agent
-[:0100001d] LAUNCH snlua httpd agent
-[:0100001e] LAUNCH snlua httpd agent
-[:0100001f] LAUNCH snlua httpd agent
-[:01000020] LAUNCH snlua httpd agent
-[:01000021] LAUNCH snlua httpd agent
-[:01000022] LAUNCH snlua httpd agent
-[:01000023] LAUNCH snlua httpd agent
-[:01000024] LAUNCH snlua httpd agent
-[:01000025] LAUNCH snlua httpd agent
-[:01000026] LAUNCH snlua httpd agent
-[:01000027] LAUNCH snlua httpd agent
 [:01000013] Listen web port 8002
+[:0100001c] LAUNCH snlua registerd
+[:0100001d] LAUNCH snlua registerd agent
+[:0100001e] LAUNCH snlua registerd agent
+[:0100001f] LAUNCH snlua registerd agent
+[:01000020] LAUNCH snlua registerd agent
+[:01000021] LAUNCH snlua registerd agent
+[:01000022] LAUNCH snlua registerd agent
+[:01000023] LAUNCH snlua registerd agent
+[:01000024] LAUNCH snlua registerd agent
+[:0100001c] Listen web port 8003
+[:01000025] LAUNCH snlua logind
+[:01000026] LAUNCH snlua logind
+[:01000027] LAUNCH snlua logind
+[:01000028] LAUNCH snlua logind
+[:01000029] LAUNCH snlua logind
+[:0100002a] LAUNCH snlua logind
+[:0100002b] LAUNCH snlua logind
+[:0100002c] LAUNCH snlua logind
+[:0100002d] LAUNCH snlua logind
+[:01000025] login server listen at : 127.0.0.1 8001
+[:0100002e] LAUNCH snlua gamed 16777253
+[:0100002e] Listen on 0.0.0.0:8888
 [:01000009] KILL self
 [:01000002] KILL self
+[:01000026] connect from 127.0.0.1:10339 (fd = 33)
+[:01000026] auth failed: socket (fd = 33) closed
+[:01000025] invalid client (fd = 33) error = ./script/loginserver/loginserver.lua:127: socket error

@@ -1,3 +1,4 @@
+local skynet = require "skynet"
 local redis = require "skynet.db.redis"
 local packer = require "db.packer"
 local db_const = require "db.db_const"

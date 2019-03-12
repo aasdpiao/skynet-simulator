@@ -1,5 +1,5 @@
 local _class={}
- 
+
 function class(super)
 	local class_type={}
 	class_type.ctor=false
@@ -23,13 +23,13 @@ function class(super)
 		end
 	local vtbl={}
 	_class[class_type]=vtbl
- 
+
 	setmetatable(class_type,{__newindex=
 		function(t,k,v)
 			vtbl[k]=v
 		end
 	})
- 
+
 	if super then
 		setmetatable(vtbl,{__index=
 			function(t,k)
@@ -39,7 +39,7 @@ function class(super)
 			end
 		})
 	end
- 
+
 	return class_type
 end
 

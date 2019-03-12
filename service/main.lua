@@ -1,3 +1,5 @@
+local skynet = require "skynet"
+
 local debug_console_port = tonumber(skynet.getenv "debug_console_port")
 local game_port = tonumber(skynet.getenv "game_port")
 
@@ -10,7 +12,7 @@ skynet.start(function()
 		local console = skynet.newservice("console")
 	end
 
-    skynet.newservice("debug_console",debug_console_port)
+	skynet.newservice("debug_console",debug_console_port)
 	--加载协议
 	skynet.uniqueservice "sprotod"
 	--加载配置文件

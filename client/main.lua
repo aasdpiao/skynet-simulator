@@ -1,17 +1,21 @@
 package.cpath = "skynet/luaclib/?.so"
-package.path = "skynet/lualib/?.lua;".."server/lualib/?.lua;".."?.lua"
+package.path = "skynet/lualib/?.lua;".."server/lualib/?.lua;".."?.lua;".."preload/?.lua"
 
-CLIENT = true
+require "luaext"
+require "error_code"
+require "source_code"
+require "consume_code"
+require "msg"
+require "random"
 
 local RoleObject = require("client.role_object")
 
 local token = {
 	server = "township",
 	user = "zdq",
-	pass = "e10adc3949ba59abbe56e057f20f883e",
-	request_type = "register"
+	pass = "123456",
 }
 
-local robot = RoleObject.new(token)
-robot:start()
+local role_object = RoleObject.new(token)
+role_object:start()
 
