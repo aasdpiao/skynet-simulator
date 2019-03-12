@@ -1,3 +1,5 @@
+local skynet = require "skynet"
+
 local RoleDispatcher = class()
 
 function RoleDispatcher:ctor(role_object)
@@ -14,7 +16,6 @@ end
 
 function RoleDispatcher:init()
     self:register_c2s_callback("pingpong",self.dispatcher_c2s_pingpong)
-
     self:register_s2c_callback("pingpong",self.dispatcher_s2c_pingpong)
 end
 
@@ -25,7 +26,13 @@ end
 
 function RoleDispatcher.dispatcher_c2s_pingpong(role_object,msg_data)
     local ping = msg_data.ping
-    self.__role_object:send_request("pingpong",{ping = ping + 1})
+    skynet.error("ping",ping)
+    skynet.fork(function()
+        while true do
+            skynet.sleep(100)
+            role_object:send_request("pingpong",{ping = ping + 1})
+        end
+    end)
     return {pong = ping}
 end
 

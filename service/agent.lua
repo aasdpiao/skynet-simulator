@@ -16,7 +16,7 @@ local session_id = 0
 local function send_message(message)
 	if not client_fd then return end
 	local package = string.pack (">s2", message)
-	socketdriver.send(client_fd, netpack.pack(package))
+	socketdriver.send(client_fd, package)
 end
 
 local function send_request (name, args)
@@ -31,7 +31,7 @@ end
 local function handle_request (name, args, response)
 	local f = role_object:get_handle_request(name)
 	if f then
-		local ok, ret = xpcall (f, traceback, role_object, args)
+		local ok, ret = xpcall (f, debug.traceback, role_object, args)
 		if not ok then
 			syslog.warningf ("handle message(%s) failed : %s", name, ret) 
 		else
@@ -58,7 +58,7 @@ local function handle_response(id, args)
 		syslog.warningf ("unhandled response : %s", s.name)
 		return
 	end
-	local ok, ret = xpcall (f, traceback, role_object, s.args, args)
+	local ok, ret = xpcall (f, debug.traceback, role_object, s.args, args)
 	if not ok then
 		syslog.warningf ("handle response(%d-%s) failed : %s", id, s.name, ret) 
 	end
@@ -87,7 +87,8 @@ function CMD.login(source, name, id, secret)
 	gate = source
 	account_name = name
 	account_id = id
-	role_object = RoleObject.new(account_id)
+	role_object = RoleObject.new(account_id,send_request)
+	role_object:init()
 	-- you may load user data from database
 end
 

@@ -17,7 +17,10 @@ local conf = {
 function RoleObject:ctor(token)
     self.__token = token
     self.__account_id = 0
-    self.__socket_client = SocketClient.new(self,conf,token)
+end
+
+function RoleObject:init()
+    self.__socket_client = SocketClient.new(self,conf,self.__token)
     self.__socket_client:init()
     self.__role_dispatcher = RoleDispatcher.new()
     self.__role_dispatcher:init()

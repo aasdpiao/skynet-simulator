@@ -22,19 +22,19 @@ function RoleDispatcher:get_handle_response(name)
 end
 
 function RoleDispatcher:init()
-    self:register_s2c_callback("synctime",self.dispatcher_s2c_pingpong)
-    self:register_c2s_callback("synctime",self.dispatcher_c2s_pingpong)
+    self:register_s2c_callback("pingpong",self.dispatcher_s2c_pingpong)
+    self:register_c2s_callback("pingpong",self.dispatcher_c2s_pingpong)
 end
 
 function RoleDispatcher.dispatcher_s2c_pingpong(role_object,args)
     local ping = args.ping
-    role_object:send_request("ping",{ping = ping + 1})
+    print("s2c_pingpong",ping)
     return {pong = ping}
 end
 
 function RoleDispatcher.dispatcher_c2s_pingpong(role_object,params,args)
     local pong = args.pong
-    print(pong)
+    print("c2s_pingpong",pong)
 end
 
 return RoleDispatcher

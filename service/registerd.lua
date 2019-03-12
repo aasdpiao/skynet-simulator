@@ -28,8 +28,6 @@ if mode == "agent" then
         local ret = skynet.call("mysqld","lua","queryaccountdb",sql,true)
         local retcode = ret[1][1][1]
         local account_id = ret[1][1][2]
-        skynet.error(retcode)
-        skynet.error(account_id)
         if retcode == 101 then
             return "用户名已注册"
         elseif retcode == 100 then

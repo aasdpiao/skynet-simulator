@@ -17,5 +17,6 @@ local token = {
 }
 
 local role_object = RoleObject.new(token)
+role_object:init()
 role_object:start()
 
