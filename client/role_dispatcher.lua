@@ -1,25 +1,40 @@
 local RoleDispatcher = class()
 
 function RoleDispatcher:ctor()
-    self.__protocal = {}
+    self.__s2c_protocal = {}
+    self.__c2s_protocal = {}
 end
 
 function RoleDispatcher:register_s2c_callback(name,callback)
-    self.__protocal[name] = callback
+    self.__s2c_protocal[name] = callback
+end
+
+function RoleDispatcher:register_c2s_callback(name,callback)
+    self.__c2s_protocal[name] = callback
+end
+
+function RoleDispatcher:get_handle_request(name)
+    return self.__c2s_protocal[name]
 end
 
 function RoleDispatcher:get_handle_response(name)
-    return self.__protocal[name]
+    return self.__s2c_protocal[name]
 end
 
 function RoleDispatcher:init()
-    -- self:register_s2c_callback("synctime",self.dispatcher_synctime)
-    -- self:register_s2c_callback("cmd",self.dispatcher_cmd)
-    -- self:register_s2c_callback("pull",self.dispatcher_pull)
-    -- self:register_s2c_callback("push",self.dispatcher_push)
-    -- self:register_s2c_callback("planting_cropper",self.dispatcher_planting_cropper)
-    -- self:register_s2c_callback("harvest_cropper",self.dispatcher_harvest_cropper)
-    -- self:register_s2c_callback("promote_plant",self.dispatcher_promote_plant)
+    self:register_s2c_callback("synctime",self.dispatcher_s2c_pingpong)
+    self:register_c2s_callback("synctime",self.dispatcher_c2s_pingpong)
+end
+
+function RoleDispatcher.dispatcher_s2c_pingpong(role_object,args)
+    local ping = args.ping
+    role_object:send_request("ping",{ping = ping + 1})
+    return {pong = ping}
+end
+
+function RoleDispatcher.dispatcher_c2s_pingpong(role_object,params,args)
+    local pong = args.pong
+    print(pong)
 end
 
 return RoleDispatcher

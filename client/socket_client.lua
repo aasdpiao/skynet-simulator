@@ -179,19 +179,22 @@ function SocketClient:handle_message (t, ...)
 end
 
 function SocketClient:handle_request (name, args, response)
-	print ("request", name)
+	local f = self.__role_object:get_handle_response(name)
+	if f then
+		self:send_message(response(f(self.__role_object,args)))
+	else
+		print("unhandle_request : "..name)
+	end
 end
 
 function SocketClient:handle_response (id, args)
 	local s = assert (self.__session[id])
 	self.__session[id] = nil
-	local f = self.__role_object:get_handle_response(s.name)
-	print("handle_response : "..s.name)
+	local f = self.__role_object:get_handle_request(s.name)
 	if f then
 		f (self.__role_object,s.args, args)
 	else
-		print("response")
-		print_r (args)
+		print("unhandle_response : "..s.name)
 	end
 end
 

@@ -19,3 +19,12 @@ sale_item 102{
 		result 0 : integer
 	}
 }
+
+pingpong 103{
+	request {
+		ping 0 : integer
+	}
+	response {
+		pong 0 : integer
+	}
+}

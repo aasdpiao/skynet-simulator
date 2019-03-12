@@ -41,6 +41,8 @@ function RoleObject:start()
     self.__account_id = self.__socket_client:Login(self.__token)
     self.__socket_client:ConnectGameServer(self.__account_id)
 
+    self.__socket_client:send_request("pingpong",{ping=1})
+
     self.message_route(self)
 end
 
@@ -57,6 +59,14 @@ end
 
 function RoleObject:get_handle_response(name)
     return self.__role_dispatcher:get_handle_response(name)
+end
+
+function RoleObject:get_handle_request(name)
+    return self.__role_dispatcher:get_handle_request(name)
+end
+
+function RoleObject:send_request(name,args)
+    self.__socket_client:send_request(name,args)
 end
 
 return RoleObject

@@ -5,8 +5,8 @@
 [:01000004] master listen socket 0.0.0.0:2013
 [:01000005] LAUNCH snlua cslave
 [:01000005] slave connect to master 127.0.0.1:2013
-[:01000004] connect from 127.0.0.1:7979 4
 [:01000006] LAUNCH harbor 1 16777221
+[:01000004] connect from 127.0.0.1:13314 4
 [:01000004] Harbor 1 (fd=4) report 127.0.0.1:2526
 [:01000005] Waiting for 0 harbors
 [:01000005] Shakehand ready
@@ -62,9 +62,32 @@
 [:0100002e] Listen on 0.0.0.0:8888
 [:01000009] KILL self
 [:01000002] KILL self
-[:01000026] connect from 127.0.0.1:8012 (fd = 33)
+[:01000026] connect from 127.0.0.1:13339 (fd = 33)
 [:0100002f] LAUNCH snlua agent
 [:0100002f] zdq is login
-[:0100002e] login emRx@dG93bnNoaXA=#MTAwMDAwMA==
-[:0100002e] emRx@dG93bnNoaXA=#MTAwMDAwMA==
-[:0100002f] AFK
+[:0100002f] lua call [100002e to :100002f : 4 msgsz = 27] error : [31m./skynet/lualib/skynet.lua:651: ./skynet/lualib/skynet.lua:198: ./script/role/role_dispatcher.lua:8: attempt to call a nil value (method 'register_c2s_callback')
+stack traceback:
+	./script/role/role_dispatcher.lua:8: in method 'register_c2s_callback'
+	./script/role/role_dispatcher.lua:16: in method 'init'
+	./script/role/role_object.lua:11: in function 'role.role_object.ctor'
+	./preload/class.lua:16: in local 'create'
+	./preload/class.lua:19: in function 'role.role_object.new'
+	./service/agent.lua:90: in local 'f'
+	./service/agent.lua:116: in upvalue 'f'
+	./skynet/lualib/skynet.lua:155: in function <./skynet/lualib/skynet.lua:127>
+stack traceback:
+	[C]: in function 'assert'
+	./skynet/lualib/skynet.lua:651: in function 'skynet.dispatch_message'[0m
+[:0100002e] lua call [100002f to :100002e : 4 msgsz = 0] error : [31m./skynet/lualib/skynet.lua:651: ./skynet/lualib/skynet.lua:198: ./skynet/lualib/skynet.lua:373: call failed
+stack traceback:
+	[C]: in function 'error'
+	./skynet/lualib/skynet.lua:373: in upvalue 'yield_call'
+	./skynet/lualib/skynet.lua:390: in function 'skynet.call'
+	./service/gamed.lua:32: in function <./service/gamed.lua:24>
+	(...tail calls...)
+	./skynet/lualib/snax/gateserver.lua:151: in upvalue 'f'
+	./skynet/lualib/skynet.lua:155: in function <./skynet/lualib/skynet.lua:127>
+stack traceback:
+	[C]: in function 'assert'
+	./skynet/lualib/skynet.lua:651: in function 'skynet.dispatch_message'[0m
+[:01000025] invalid client (fd = 33) error = nil
