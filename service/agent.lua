@@ -92,6 +92,10 @@ function CMD.login(source, name, id, secret)
 	-- you may load user data from database
 end
 
+function CMD.reenter(source, name, id, secret)
+	skynet.error(string.format("%s is reenter", name))
+end
+
 function CMD.logout(source)
 	-- NOTICE: The logout MAY be reentry
 	skynet.error(string.format("%s is logout", account_name))

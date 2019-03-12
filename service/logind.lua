@@ -33,9 +33,6 @@ function server.login_handler(server, user, account_id, secret)
 	if last then
 		skynet.call(last.address, "lua", "kick", account_id, last.subid)
 	end
-	if user_online[account_id] then
-		error(string.format("user %s is already online", user))
-	end
 	skynet.call(gameserver, "lua", "login", user, account_id, secret)
 	user_online[account_id] = { address = gameserver, account_id = account_id}
 end

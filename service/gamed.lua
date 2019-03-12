@@ -23,7 +23,11 @@ end
 -- call by login server
 function server.login_handler(account_name,account_id,secret)
 	if users[account_id] then
-		error(string.format("%s is already login", account_name))
+		LOG_WARNING("%s is already login", account_name)
+		local u = users[account_id]
+		skynet.call(u.agent, "lua", "reenter", account_name, account_id, secret)
+		msgserver.reenter(u.username,secret)
+		return
 	end
 	local username = msgserver.username(account_name, account_id, servername)
 	-- you can use a pool to alloc new agent

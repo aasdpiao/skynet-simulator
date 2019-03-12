@@ -5,8 +5,8 @@
 [:01000004] master listen socket 0.0.0.0:2013
 [:01000005] LAUNCH snlua cslave
 [:01000005] slave connect to master 127.0.0.1:2013
+[:01000004] connect from 127.0.0.1:3504 4
 [:01000006] LAUNCH harbor 1 16777221
-[:01000004] connect from 127.0.0.1:60692 4
 [:01000004] Harbor 1 (fd=4) report 127.0.0.1:2526
 [:01000005] Waiting for 0 harbors
 [:01000005] Shakehand ready
@@ -62,9 +62,17 @@
 [:0100002e] Listen on 0.0.0.0:8888
 [:01000009] KILL self
 [:01000002] KILL self
-[:01000026] connect from 127.0.0.1:60720 (fd = 33)
+[:01000026] connect from 127.0.0.1:3531 (fd = 33)
 [:0100002f] LAUNCH snlua agent
 [:0100002f] zdq is login
+[:0100002e] login emRx@dG93bnNoaXA=#MQ==
+[:0100002e] emRx@dG93bnNoaXA=#MQ==
+[:0100002f] ping 1
+[:0100002f] pong 2
+[:0100002f] pong 2
+[:0100002f] AFK
+[:01000027] connect from 127.0.0.1:3538 (fd = 35)
+[:0100002f] zdq is reenter
 [:0100002e] login emRx@dG93bnNoaXA=#MQ==
 [:0100002e] emRx@dG93bnNoaXA=#MQ==
 [:0100002f] ping 1
@@ -90,6 +98,31 @@
 [:0100002f] pong 2
 [:0100002f] pong 2
 [:0100002f] pong 2
+[:0100002f] pong 2
+[:0100002f] pong 2
+[:0100002f] pong 2
+[:0100002f] pong 2
+[:0100002f] AFK
+[:01000028] connect from 127.0.0.1:3571 (fd = 37)
+[:0100002f] zdq is reenter
+[:0100002e] login emRx@dG93bnNoaXA=#MQ==
+[:0100002e] emRx@dG93bnNoaXA=#MQ==
+[:0100002f] ping 1
+[:0100002f] pong 2
+[:0100002f] pong 2
+[:0100002f] pong 2
+[:0100002f] pong 2
+[:0100002f] pong 2
+[:0100002f] pong 2
+[:0100002f] pong 2
+[:0100002f] pong 2
+[:0100002f] pong 2
+[:0100002f] AFK
+[:01000029] connect from 127.0.0.1:3577 (fd = 39)
+[:0100002f] zdq is reenter
+[:0100002e] login emRx@dG93bnNoaXA=#MQ==
+[:0100002e] emRx@dG93bnNoaXA=#MQ==
+[:0100002f] ping 1
 [:0100002f] pong 2
 [:0100002f] pong 2
 [:0100002f] pong 2

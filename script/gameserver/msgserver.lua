@@ -117,6 +117,13 @@ function server.login(username, secret)
 	}
 end
 
+function server.reenter(username,secret)
+	skynet.error("login",username)
+	local u = user_online[username]
+	u.version = 0
+	u.secret = secret
+end
+
 function server.ip(username)
 	local u = user_online[username]
 	if u and u.fd then
