@@ -3,8 +3,8 @@
 TownShip
 
 ## 使用说明
-    git clone https://github.com/aasdpiao/township.git
-    cd township
+    git clone https://github.com/aasdpiao/skynet-simulator.git
+    cd skynet-simulator
     make
 
     mysql 依赖
@@ -18,7 +18,7 @@ TownShip
     flush privileges; 
 
     redis 依赖
-    ./start_redis.sh
+    ./tools/start_redis.sh
 
     ./run.sh
 
