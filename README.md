@@ -22,6 +22,10 @@ TownShip
 
     ./run.sh
 
+    127.0.0.1:8003?username=zdq&password=123456    通过http协议注册账号
+
+    ./client.sh   
+
     ./stop.sh
 
 ## 缺少依赖
